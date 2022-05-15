@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/bas-react-weather-app/static/css/main.31d0e210.css",
+    "main.js": "/bas-react-weather-app/static/js/main.e3058442.js",
+    "static/js/787.af58a916.chunk.js": "/bas-react-weather-app/static/js/787.af58a916.chunk.js",
+    "static/media/bridge.jpg": "/bas-react-weather-app/static/media/bridge.c0ae2009035d5eef50d4.jpg",
+    "index.html": "/bas-react-weather-app/index.html",
+    "main.31d0e210.css.map": "/bas-react-weather-app/static/css/main.31d0e210.css.map",
+    "main.e3058442.js.map": "/bas-react-weather-app/static/js/main.e3058442.js.map",
+    "787.af58a916.chunk.js.map": "/bas-react-weather-app/static/js/787.af58a916.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.31d0e210.css",
+    "static/js/main.e3058442.js"
+  ]
+}
