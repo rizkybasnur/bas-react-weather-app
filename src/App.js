@@ -75,7 +75,7 @@ function App({ isScriptLoaded, isScriptLoadSuccess }) {
 
   return (
     <div className="App">
-      <div>
+      <div style={{ marginTop: "20px" }}>
         <GooglePlacesAutocomplete
           apiKey="AIzaSyCExNq9f9hBhyDIjnZ1iw7qHP-E-51Mo_g"
           selectProps={{

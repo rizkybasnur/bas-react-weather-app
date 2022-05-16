@@ -28,7 +28,7 @@
 
 .container-daily {
   max-width: 1200px;
-  margin: 40px auto;
+  margin: 20px auto;
   display: grid;
   gap: 10px;
 }
