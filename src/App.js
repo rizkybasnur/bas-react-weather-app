@@ -102,9 +102,13 @@ function App({ isScriptLoaded, isScriptLoadSuccess }) {
             <div style={{ display: "flex", justifyContent: "center" }}>
               <div>{location}</div>
             </div>
+
             <DayJS element="h4" format="dddd, DD/MM/YYYY">
               {currentTime(currentWeather.dt)}
             </DayJS>
+            <img
+              src={`http://openweathermap.org/img/w/${currentWeather?.weather[0]?.icon}.png`}
+            />
             <h1>{temperature(currentWeather.temp)}&deg;C </h1>
             <h5>Kelembapan {currentWeather.humidity}</h5>
             <h5>
@@ -128,10 +132,18 @@ function App({ isScriptLoaded, isScriptLoadSuccess }) {
               return (
                 <div key={day.dt} style={{ marginLeft: "16px" }}>
                   <div>
-                    <DayJS element="h4" format="ddd, DD/MM/YY">
+                    <DayJS element="h5" format="ddd, DD/MM/YY">
                       {currentTime(day.dt)}
                     </DayJS>
+                    <img
+                      src={`http://openweathermap.org/img/w/${day?.weather[0]?.icon}.png`}
+                    />
                     <div>{temperature(day.temp.day)}&deg;C</div>
+                    <h6>Kelembapan {day.humidity}</h6>
+                    <h6>
+                      {day?.weather[0]?.main}{" "}
+                      <span>({day?.weather[0]?.description})</span>
+                    </h6>
                   </div>
                 </div>
               );
