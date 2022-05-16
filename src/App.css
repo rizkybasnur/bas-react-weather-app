@@ -28,14 +28,14 @@
 
 .container-daily {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 40px auto;
   display: grid;
   gap: 10px;
 }
 
 @media (max-width: 549px) {
   .container-daily {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
