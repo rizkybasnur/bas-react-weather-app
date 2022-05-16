@@ -5,6 +5,7 @@ import DayJS from "react-dayjs";
 import dayjs from "dayjs";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
+import refresh from "./assets/refresh-2-48.png";
 
 function App({ isScriptLoaded, isScriptLoadSuccess }) {
   const [search, setSearch] = useState("");
@@ -14,6 +15,7 @@ function App({ isScriptLoaded, isScriptLoadSuccess }) {
   const [location, setLocation] = useState("");
   const [value, setValue] = useState(null);
   const [geo, setGeo] = useState({ lat: "", long: "" });
+  const [loading, setLoading] = useState(false);
 
   const getData = async () => {
     await axios
@@ -53,6 +55,7 @@ function App({ isScriptLoaded, isScriptLoadSuccess }) {
   }, [data]);
 
   const getCurrentWeather = async () => {
+    setLoading(true);
     await axios
       .get(
         `https://api.openweathermap.org/data/2.5/onecall?lat=${geo.lat}&lon=${geo.long}&exclude=minutely,hourly,alerts&lang=id&appid=d38505533d3daae013cee533da5d0f74`
@@ -60,6 +63,7 @@ function App({ isScriptLoaded, isScriptLoadSuccess }) {
       .then((res) => {
         setCurrentWeather(res.data.current);
         setDaily(res.data.daily);
+        setLoading(false);
       });
   };
 
@@ -73,83 +77,109 @@ function App({ isScriptLoaded, isScriptLoadSuccess }) {
     return current.toString();
   };
 
+  const onRefresh = () => {
+    window.location.reload();
+  };
+
   return (
     <div className="App">
-      <div style={{ marginTop: "20px" }}>
-        <GooglePlacesAutocomplete
-          apiKey="AIzaSyCExNq9f9hBhyDIjnZ1iw7qHP-E-51Mo_g"
-          selectProps={{
-            value,
-            onChange: setValue,
-            styles: {
-              input: (provided) => ({
-                ...provided,
-                innerWidth: "400px",
-                outerWidth: "400px",
-              }),
-              option: (provided) => ({
-                ...provided,
-                color: "black",
-                maxWidth: "400px",
-              }),
-            },
-          }}
-          apiOptions={{ types: ["(cities)"] }}
-        />
+      {!loading ? (
+        <>
+          <h6
+            style={{
+              position: "absolute",
+              top: 20,
+              right: 30,
+              display: "flex",
+              alignItems: "center",
+              cursor: "pointer",
+            }}
+            onClick={onRefresh}
+          >
+            <img src={refresh} width={12}></img>
+            <div>refresh</div>
+          </h6>
 
-        {currentWeather && (
-          <div style={{ marginTop: "40px", textAlign: "center" }}>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <div>{location}</div>
-            </div>
-
-            <DayJS element="h4" format="dddd, DD/MM/YYYY">
-              {currentTime(currentWeather.dt)}
-            </DayJS>
-            <img
-              src={`http://openweathermap.org/img/w/${currentWeather?.weather[0]?.icon}.png`}
+          <div style={{ marginTop: "20px" }}>
+            <GooglePlacesAutocomplete
+              apiKey="AIzaSyCExNq9f9hBhyDIjnZ1iw7qHP-E-51Mo_g"
+              selectProps={{
+                placeholder: "Cari lokasi...",
+                value,
+                onChange: setValue,
+                styles: {
+                  input: (provided) => ({
+                    ...provided,
+                    innerWidth: "400px",
+                    outerWidth: "400px",
+                  }),
+                  option: (provided) => ({
+                    ...provided,
+                    color: "black",
+                    maxWidth: "400px",
+                  }),
+                },
+              }}
+              apiOptions={{ types: ["(cities)"] }}
             />
-            <h1>{temperature(currentWeather.temp)}&deg;C </h1>
-            <h5>Kelembapan {currentWeather.humidity}</h5>
-            <h5>
-              {currentWeather?.weather[0]?.main}{" "}
-              <span>({currentWeather?.weather[0]?.description})</span>
-            </h5>
-          </div>
-        )}
-      </div>
 
-      <div style={{ marginTop: "40px", textAlign: "center" }}>
-        <div>Prakiraan Cuaca beberapa hari ke depan:</div>
-        <div
-          className="container-daily"
-          style={{
-            marginTop: "20px",
-          }}
-        >
-          {daily &&
-            daily.map((day) => {
-              return (
-                <div key={day.dt} style={{ marginLeft: "16px" }}>
-                  <div>
-                    <DayJS element="h5" format="ddd, DD/MM/YY">
-                      {currentTime(day.dt)}
-                    </DayJS>
-                    <img
-                      src={`http://openweathermap.org/img/w/${day?.weather[0]?.icon}.png`}
-                    />
-                    <div>{temperature(day.temp.day)}&deg;C</div>
-                    <h6>Kelembapan {day.humidity}</h6>
-                    <h6>
-                      {day?.weather[0]?.main}{" "}
-                      <span>({day?.weather[0]?.description})</span>
-                    </h6>
-                  </div>
+            {currentWeather && (
+              <div style={{ marginTop: "40px", textAlign: "center" }}>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <div>{location}</div>
                 </div>
-              );
-            })}
-        </div>
-      </div>
+
+                <DayJS element="h4" format="dddd, DD/MM/YYYY">
+                  {currentTime(currentWeather.dt)}
+                </DayJS>
+                <img
+                  src={`http://openweathermap.org/img/w/${currentWeather?.weather[0]?.icon}.png`}
+                />
+                <h1>{temperature(currentWeather.temp)}&deg;C </h1>
+                <h5>Kelembapan {currentWeather.humidity}</h5>
+                <h5>
+                  {currentWeather?.weather[0]?.main}{" "}
+                  <span>({currentWeather?.weather[0]?.description})</span>
+                </h5>
+              </div>
+            )}
+          </div>
+
+          <div style={{ marginTop: "40px", textAlign: "center" }}>
+            <div>Prakiraan Cuaca beberapa hari ke depan:</div>
+            <div
+              className="container-daily"
+              style={{
+                marginTop: "20px",
+              }}
+            >
+              {daily &&
+                daily.map((day) => {
+                  return (
+                    <div key={day.dt} style={{ marginLeft: "16px" }}>
+                      <div>
+                        <DayJS element="h5" format="ddd, DD/MM/YY">
+                          {currentTime(day.dt)}
+                        </DayJS>
+                        <img
+                          src={`http://openweathermap.org/img/w/${day?.weather[0]?.icon}.png`}
+                        />
+                        <div>{temperature(day.temp.day)}&deg;C</div>
+                        <h6>Kelembapan {day.humidity}</h6>
+                        <h6>
+                          {day?.weather[0]?.main}{" "}
+                          <span>({day?.weather[0]?.description})</span>
+                        </h6>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        </>
+      ) : (
+        <div class="loader"></div>
+      )}
     </div>
   );
 }
